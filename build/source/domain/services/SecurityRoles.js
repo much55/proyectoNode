@@ -29,16 +29,24 @@ class SecurityRoles {
             else {
                 this.rol = yield this.userRepository.findByRol(id);
                 this.authorized = this.verifyLevel();
+                console.log("autorizacion " + this.authorized);
             }
         });
     }
     verifyLevel() {
         switch (this.levelSecurity) {
             case "*":
-                this.rol === "admin" ? true : false;
+                console.log(this.rol[0].name);
+                if (this.rol[0].name === "admin")
+                    return true;
+                else
+                    return false;
                 break;
             case "+":
-                this.rol === "employee" ? true : false;
+                if (this.rol[0].name === "employee")
+                    return true;
+                else
+                    return false;
                 break;
             default:
                 return false;

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Messages = void 0;
 const exceptionDuplicateForeignKey_1 = require("../exceptions/exceptionDuplicateForeignKey");
 const exceptionDuplicateInformation_1 = require("../exceptions/exceptionDuplicateInformation");
+const exceptionGeneral_1 = require("../exceptions/exceptionGeneral");
 const exceptionIncompleteInformation_1 = require("../exceptions/exceptionIncompleteInformation");
 const ExceptionUnauthorized_1 = require("../exceptions/ExceptionUnauthorized");
 class Messages {
@@ -21,6 +22,7 @@ class Messages {
                 this.exception = new ExceptionUnauthorized_1.UnauthorizedException();
                 break;
             default:
+                this.exception = new exceptionGeneral_1.GeneralException();
                 console.log("entro a defaulttt el codigo es " + ncode);
                 //      this.exception= new Exception1();
                 break;

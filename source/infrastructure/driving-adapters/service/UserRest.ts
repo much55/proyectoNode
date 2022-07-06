@@ -16,7 +16,7 @@ export const app= express();
 export const  create= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
-        securityRoles.run(req.headers.auth);
+        await securityRoles.run(req.headers.auth);
 
         if (securityRoles.authorized) {
             let createUser = new CreateUser(new UserRepositoryImpl());
@@ -26,6 +26,7 @@ export const  create= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
+        error.code===undefined || null?error.code='':error.code
             let  message= new Messages(error.code.toString());
             res.status(message.exception.getCode()).send(message.exception.getMessage());
         
@@ -35,7 +36,7 @@ export const  create= async (req,res)=>{
 export const  update= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
-        securityRoles.run(req.headers.auth);
+        await securityRoles.run(req.headers.auth);
 
         if (securityRoles.authorized) {
             let updateUser = new UpdateUser(new UserRepositoryImpl());
@@ -45,6 +46,7 @@ export const  update= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
+        error.code===undefined || null?error.code='':error.code
         let  message= new Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
         
@@ -56,8 +58,8 @@ export const  update= async (req,res)=>{
 export const  show= async (req,res)=>{
     try {
         
-        let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"'");
-        securityRoles.run(req.headers.auth);
+        let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
+        await securityRoles.run(req.headers.auth);
 
         if (securityRoles.authorized) {
             let showUsers = new ShowUsers(new UserRepositoryImpl());
@@ -67,6 +69,7 @@ export const  show= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
+        error.code===undefined || null?error.code='':error.code
         let  message= new Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -76,8 +79,7 @@ export const  show= async (req,res)=>{
 export const  showForId= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
-        securityRoles.run(req.headers.auth);
-
+        await securityRoles.run(req.headers.auth);
        if (securityRoles.authorized) {
             let showUserForId = new ShowUserForId(new UserRepositoryImpl());
             let list= await showUserForId.run(req.params.id);
@@ -86,6 +88,7 @@ export const  showForId= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
+        error.code===undefined || null?error.code='':error.code
         let  message= new Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -95,7 +98,7 @@ export const  showForId= async (req,res)=>{
 export const  remove= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
-        securityRoles.run(req.headers.auth);
+        await securityRoles.run(req.headers.auth);
        if (securityRoles.authorized) {
             let deleteUser = new DeleteUser(new UserRepositoryImpl());
             let deletedRows= await deleteUser.run(req.params.id);
@@ -105,6 +108,7 @@ export const  remove= async (req,res)=>{
         else throw new Errors("unauthorized");
          
     } catch (error) {
+        error.code===undefined || null?error.code='':error.code
         let  message= new Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }

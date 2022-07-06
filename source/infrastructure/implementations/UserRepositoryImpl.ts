@@ -30,9 +30,9 @@ import { pool } from "./Conection";
     }
 
     async update(user: User):Promise< User[]> {
-        const {id,document,last_name,name } = user;
-      let returnedUser= await pool.query('update users set document=$1,last_name=$2,name=$3 where id=$4 RETURNING *',
-        [document,last_name,name,id]);
+        const {id,document,last_name,name,roles_id } = user;
+      let returnedUser= await pool.query('update users set document=$1,last_name=$2,name=$3,roles_id=$4 where id=$5 RETURNING *',
+        [document,last_name,name,roles_id,id]);
         return returnedUser.rows;
     }
 

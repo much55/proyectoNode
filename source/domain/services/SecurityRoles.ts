@@ -4,7 +4,7 @@ import { UserRepository } from "../repositories/UserRepository";
 
 export class SecurityRoles{
 
-    private rol:string;
+    private rol;
     private levelSecurity:string;
     private userRepository:UserRepository;
     private _authorized: boolean;
@@ -29,16 +29,21 @@ export class SecurityRoles{
             else{
                 this.rol=  await this.userRepository.findByRol(id);
                 this.authorized= this.verifyLevel();
+                console.log("autorizacion "+this.authorized);
             }
     }
     private verifyLevel():boolean{
         switch (this.levelSecurity) {
             case "*":
-                this.rol==="admin"?  true:false;    
+                console.log(this.rol[0].name);
+                if (this.rol[0].name=== "admin") return true;
+                else return false;
+
             break;
 
             case "+":
-                this.rol==="employee"?  true:false;    
+                if (this.rol[0].name=== "employee") return true;
+                else return false;   
             break;
         
             default:

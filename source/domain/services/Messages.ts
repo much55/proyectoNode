@@ -1,6 +1,7 @@
 
 import { DuplicateIForeignException } from "../exceptions/exceptionDuplicateForeignKey";
 import { DuplicateInformationException } from "../exceptions/exceptionDuplicateInformation";
+import { GeneralException } from "../exceptions/exceptionGeneral";
 import { IncompleteInformationException } from "../exceptions/exceptionIncompleteInformation";
 import { ExceptionInter } from "../exceptions/exceptionInter";
 import { UnauthorizedException } from "../exceptions/ExceptionUnauthorized";
@@ -26,6 +27,7 @@ export class Messages{
                 this.exception= new UnauthorizedException();
                 break;    
             default:
+                this.exception= new GeneralException();
                 console.log("entro a defaulttt el codigo es " + ncode);
          //      this.exception= new Exception1();
                 break;

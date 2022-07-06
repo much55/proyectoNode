@@ -24,7 +24,7 @@ exports.app = express();
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
-        securityRoles.run(req.headers.auth);
+        yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let createUser = new createUser_1.CreateUser(new UserRepositoryImpl_1.UserRepositoryImpl());
             let usersCreated = yield createUser.run(req.body);
@@ -34,6 +34,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
+        error.code === undefined || null ? error.code = '' : error.code;
         let message = new Messages_1.Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -42,7 +43,7 @@ exports.create = create;
 const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
-        securityRoles.run(req.headers.auth);
+        yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let updateUser = new updateUser_1.UpdateUser(new UserRepositoryImpl_1.UserRepositoryImpl());
             let usersupdated = yield updateUser.run(req.body);
@@ -52,6 +53,7 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
+        error.code === undefined || null ? error.code = '' : error.code;
         let message = new Messages_1.Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -59,8 +61,8 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.update = update;
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "'");
-        securityRoles.run(req.headers.auth);
+        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
+        yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let showUsers = new showUsers_1.ShowUsers(new UserRepositoryImpl_1.UserRepositoryImpl());
             let list = yield showUsers.run();
@@ -70,6 +72,7 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
+        error.code === undefined || null ? error.code = '' : error.code;
         let message = new Messages_1.Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -78,7 +81,7 @@ exports.show = show;
 const showForId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
-        securityRoles.run(req.headers.auth);
+        yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let showUserForId = new showUserId_1.ShowUserForId(new UserRepositoryImpl_1.UserRepositoryImpl());
             let list = yield showUserForId.run(req.params.id);
@@ -88,6 +91,7 @@ const showForId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
+        error.code === undefined || null ? error.code = '' : error.code;
         let message = new Messages_1.Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
@@ -96,7 +100,7 @@ exports.showForId = showForId;
 const remove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
-        securityRoles.run(req.headers.auth);
+        yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let deleteUser = new deleteUser_1.DeleteUser(new UserRepositoryImpl_1.UserRepositoryImpl());
             let deletedRows = yield deleteUser.run(req.params.id);
@@ -106,6 +110,7 @@ const remove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
+        error.code === undefined || null ? error.code = '' : error.code;
         let message = new Messages_1.Messages(error.code.toString());
         res.status(message.exception.getCode()).send(message.exception.getMessage());
     }
