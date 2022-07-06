@@ -10,3 +10,4 @@ exports.app.get('/users', UserRest_1.show);
 exports.app.post('/users/', UserRest_1.create);
 exports.app.put('/users/', UserRest_1.update);
 exports.app.delete('/users/:id', UserRest_1.remove);
+exports = exports.app;

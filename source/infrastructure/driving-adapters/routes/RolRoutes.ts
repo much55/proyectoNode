@@ -2,10 +2,11 @@
 import {create} from "../service/RolRest";
 
 const express = require('express');
-export const appRol= express();
+export const app= express();
 
-appRol.use(express.json());
-appRol.post('/roles/',create);
+app.use(express.json());
+app.post('/roles/',create);
+exports=app
 
 
  

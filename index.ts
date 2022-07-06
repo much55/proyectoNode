@@ -1,11 +1,13 @@
 import { app } from "./source/infrastructure/driving-adapters/routes/UserRoutes";
-import {  } from "./source/infrastructure/driving-adapters/routes/RolRoutes";
+import { app as appRoles } from "./source/infrastructure/driving-adapters/routes/RolRoutes";
+import { appP as appProducts } from "./source/infrastructure/driving-adapters/routes/ProductRoutes";
 
 
 
 const port =3000;
 
-
+app.use(appRoles);
+app.use(appProducts);
 	
 
 

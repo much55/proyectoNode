@@ -14,7 +14,7 @@ export const app= express();
 export const  create= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
-        securityRoles.run(req.headers.auth);
+         await securityRoles.run(req.headers.auth);
 
         if (securityRoles.authorized) {
             let createRol = new CreateRol(new RolRepositoryImpl());
@@ -24,7 +24,7 @@ export const  create= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-            error.code===undefined || null?error.code='':error.code
+             error.code===undefined || null?error.code='':error.code
             let  message= new Messages(error.code.toString());
             res.status(message.exception.getCode()).send(message.exception.getMessage());
         

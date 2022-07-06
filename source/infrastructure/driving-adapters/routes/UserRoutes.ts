@@ -11,4 +11,4 @@ app.post('/users/',create);
 app.put('/users/',update);
 app.delete('/users/:id',remove);
 
- 
+ exports=app;

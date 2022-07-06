@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.appP = void 0;
+const ProductRest_1 = require("../service/ProductRest");
+const express = require('express');
+exports.appP = express();
+exports.appP.use(express.json());
+exports.appP.post('/products/', ProductRest_1.create);
+exports.appP.get('/products/', ProductRest_1.show);
+exports = exports.appP;
