@@ -40,7 +40,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.create = create;
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
+        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "'");
         yield securityRoles.run(req.headers.auth);
         if (securityRoles.authorized) {
             let showProducts = new showProduct_1.ShowProducts(new ProductRepositoryImpl_1.ProductRepositoryImpl());
