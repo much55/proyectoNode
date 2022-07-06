@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.app = void 0;
+const UserRest_1 = require("../service/UserRest");
+const express = require('express');
+exports.app = express();
+exports.app.use(express.json());
+exports.app.get('/users/:id', UserRest_1.showForId);
+exports.app.get('/users', UserRest_1.show);
+exports.app.post('/users/', UserRest_1.create);
+exports.app.put('/users/', UserRest_1.update);
+exports.app.delete('/users/:id', UserRest_1.remove);

@@ -1,8 +1,8 @@
-const express = require('express');
-const app= express();
+import { app } from "./source/infrastructure/driving-adapters/routes/UserRoutes";
+
+
 
 const port =3000;
-
 
 
 	
