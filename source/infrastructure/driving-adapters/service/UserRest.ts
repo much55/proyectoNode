@@ -12,6 +12,12 @@ const express = require('express');
 export const app= express();
 
 
+const manageException=(error,res)=>{
+    error.code===undefined || null?error.code='':error.code
+    let  message= new Messages(error.code.toString());
+    res.status(message.exception.getCode()).send(message.exception.getMessage());
+}
+
 
 export const  create= async (req,res)=>{
     try {
@@ -26,13 +32,12 @@ export const  create= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-            let  message= new Messages(error.code.toString());
-            res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
         
     }
     
 }
+
 export const  update= async (req,res)=>{
     try {
         let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
@@ -46,9 +51,7 @@ export const  update= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
         
     }
     
@@ -69,9 +72,7 @@ export const  show= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
 }
@@ -88,9 +89,7 @@ export const  showForId= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
 }
@@ -108,9 +107,7 @@ export const  remove= async (req,res)=>{
         else throw new Errors("unauthorized");
          
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
 }

@@ -10,6 +10,11 @@ import { UserRepositoryImpl } from "../../implementations/UserRepositoryImpl";
 export const app= express();
 
 
+const manageException=(error,res)=>{
+    error.code===undefined || null?error.code='':error.code
+    let  message= new Messages(error.code.toString());
+    res.status(message.exception.getCode()).send(message.exception.getMessage());
+}
 
 export const  create= async (req,res)=>{
     try {
@@ -24,9 +29,7 @@ export const  create= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-            let  message= new Messages(error.code.toString());
-            res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
         
     }
     
@@ -47,11 +50,15 @@ export const  show= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
+}
+
+export const insertBd=()=>{
+    let createproduct = new CreateProduct(new ProductRepositoryImpl());
+    createproduct.saveBd();
+
 }
 
  

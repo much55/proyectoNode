@@ -12,6 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SaleRepositoryImpl = void 0;
 const Conection_1 = require("./Conection");
 class SaleRepositoryImpl {
+    showSalesByMonth(month) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let response = yield Conection_1.pool.query("SELECT sum(products.price) as suma FROM public.sales inner join products on products.id=sales.product_id where extract(month from sales.sale_at)=$1", [month]);
+            return response.rows[0];
+        });
+    }
+    showSalesByDay(day) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let response = yield Conection_1.pool.query("SELECT sum(products.price) as suma FROM public.sales inner join products on products.id=sales.product_id where extract(day from sales.sale_at)=$1", [day]);
+            return response.rows[0];
+        });
+    }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             let response = yield Conection_1.pool.query('SELECT * FROM sales');

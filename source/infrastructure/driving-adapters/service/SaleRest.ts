@@ -10,10 +10,17 @@ import { UpdateSale } from "../../../application/usecases/sale/updateSale";
 import { ShowSale } from "../../../application/usecases/sale/showSales";
 import { ShowSaleId } from "../../../application/usecases/sale/showSaleId";
 import { DeleteSale } from "../../../application/usecases/sale/deleteSale";
-const express = require('express');
+import { ShowSaleDay } from "../../../application/usecases/sale/showSaleDay";
+import { ShowSaleMonth } from "../../../application/usecases/sale/showSaleMonth";
+ const express = require('express');
 export const app= express();
 
-
+const manageException=(error,res)=>{
+    
+    error.code===undefined || null?error.code='':error.code
+    let  message= new Messages(error.code.toString());
+    res.status(message.exception.getCode()).send(message.exception.getMessage());
+}
 
 export const  create= async (req,res)=>{
     try {
@@ -28,9 +35,7 @@ export const  create= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-            let  message= new Messages(error.code.toString());
-            res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
         
     }
     
@@ -48,9 +53,7 @@ export const  update= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
         
     }
     
@@ -71,9 +74,7 @@ export const  show= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
 }
@@ -90,9 +91,7 @@ export const  showForId= async (req,res)=>{
         else throw new Errors("unauthorized");
 
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,res);
     }
      
 }
@@ -110,11 +109,44 @@ export const  remove= async (req,res)=>{
         else throw new Errors("unauthorized");
          
     } catch (error) {
-        error.code===undefined || null?error.code='':error.code
-        let  message= new Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error,req);
     }
      
+}
+export const  showForDay= async (req,res)=>{
+    try {
+        let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
+        await securityRoles.run(req.headers.auth);
+       if (securityRoles.authorized) {
+            let showSaleForDay = new ShowSaleDay(new SaleRepositoryImpl());
+            let list= await showSaleForDay.run(req.params.day);
+            console.log("dia "+req.params.day);
+            res.status(200).send(list);
+    }
+        else throw new Errors("unauthorized");
+
+    } catch (error) {
+        manageException(error,res);
+    }
+     
+}
+export const  showForMonth= async (req,res)=>{
+    try {
+        let securityRoles= new SecurityRoles(new UserRepositoryImpl(),"*");
+        await securityRoles.run(req.headers.auth);
+       if (securityRoles.authorized) {
+            let showSaleForMonth = new ShowSaleMonth(new SaleRepositoryImpl());
+            let list= await showSaleForMonth.run(req.params.month);
+            res.status(200).send(list);
+    }
+        else throw new Errors("unauthorized");
+
+    } catch (error) {
+        manageException(error,res);
+    }
+     
+
+    
 }
 
  

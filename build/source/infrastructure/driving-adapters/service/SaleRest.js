@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.remove = exports.showForId = exports.show = exports.update = exports.create = exports.app = void 0;
+exports.showForMonth = exports.showForDay = exports.remove = exports.showForId = exports.show = exports.update = exports.create = exports.app = void 0;
 const SecurityRoles_1 = require("../../../domain/services/SecurityRoles");
 const Error_1 = require("../../../domain/exceptions/Error");
 const Messages_1 = require("../../../domain/services/Messages");
@@ -20,8 +20,15 @@ const updateSale_1 = require("../../../application/usecases/sale/updateSale");
 const showSales_1 = require("../../../application/usecases/sale/showSales");
 const showSaleId_1 = require("../../../application/usecases/sale/showSaleId");
 const deleteSale_1 = require("../../../application/usecases/sale/deleteSale");
+const showSaleDay_1 = require("../../../application/usecases/sale/showSaleDay");
+const showSaleMonth_1 = require("../../../application/usecases/sale/showSaleMonth");
 const express = require('express');
 exports.app = express();
+const manageException = (error, res) => {
+    error.code === undefined || null ? error.code = '' : error.code;
+    let message = new Messages_1.Messages(error.code.toString());
+    res.status(message.exception.getCode()).send(message.exception.getMessage());
+};
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
@@ -35,9 +42,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
-        error.code === undefined || null ? error.code = '' : error.code;
-        let message = new Messages_1.Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error, res);
     }
 });
 exports.create = create;
@@ -54,9 +59,7 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
-        error.code === undefined || null ? error.code = '' : error.code;
-        let message = new Messages_1.Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error, res);
     }
 });
 exports.update = update;
@@ -73,9 +76,7 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
-        error.code === undefined || null ? error.code = '' : error.code;
-        let message = new Messages_1.Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error, res);
     }
 });
 exports.show = show;
@@ -92,9 +93,7 @@ const showForId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
-        error.code === undefined || null ? error.code = '' : error.code;
-        let message = new Messages_1.Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error, res);
     }
 });
 exports.showForId = showForId;
@@ -111,9 +110,42 @@ const remove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error_1.Errors("unauthorized");
     }
     catch (error) {
-        error.code === undefined || null ? error.code = '' : error.code;
-        let message = new Messages_1.Messages(error.code.toString());
-        res.status(message.exception.getCode()).send(message.exception.getMessage());
+        manageException(error, req);
     }
 });
 exports.remove = remove;
+const showForDay = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
+        yield securityRoles.run(req.headers.auth);
+        if (securityRoles.authorized) {
+            let showSaleForDay = new showSaleDay_1.ShowSaleDay(new SaleRepositoryImpl_1.SaleRepositoryImpl());
+            let list = yield showSaleForDay.run(req.params.day);
+            console.log("dia " + req.params.day);
+            res.status(200).send(list);
+        }
+        else
+            throw new Error_1.Errors("unauthorized");
+    }
+    catch (error) {
+        manageException(error, res);
+    }
+});
+exports.showForDay = showForDay;
+const showForMonth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let securityRoles = new SecurityRoles_1.SecurityRoles(new UserRepositoryImpl_1.UserRepositoryImpl(), "*");
+        yield securityRoles.run(req.headers.auth);
+        if (securityRoles.authorized) {
+            let showSaleForMonth = new showSaleMonth_1.ShowSaleMonth(new SaleRepositoryImpl_1.SaleRepositoryImpl());
+            let list = yield showSaleForMonth.run(req.params.month);
+            res.status(200).send(list);
+        }
+        else
+            throw new Error_1.Errors("unauthorized");
+    }
+    catch (error) {
+        manageException(error, res);
+    }
+});
+exports.showForMonth = showForMonth;

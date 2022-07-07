@@ -4,6 +4,7 @@ exports.appP = void 0;
 const ProductRest_1 = require("../service/ProductRest");
 const express = require('express');
 exports.appP = express();
+(0, ProductRest_1.insertBd)();
 exports.appP.use(express.json());
 exports.appP.post('/products/', ProductRest_1.create);
 exports.appP.get('/products/', ProductRest_1.show);

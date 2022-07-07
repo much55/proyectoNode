@@ -2,10 +2,19 @@
 import { Sale } from "../../domain/entities/sale";
 import { SaleRepository } from "../../domain/repositories/SaleRepository";
 import { pool } from "./Conection";
+
  export class SaleRepositoryImpl implements SaleRepository{
 
-    
 
+
+   async showSalesByMonth(month: string): Promise<Sale> {
+     let  response= await pool.query("SELECT sum(products.price) as suma FROM public.sales inner join products on products.id=sales.product_id where extract(month from sales.sale_at)=$1",[month]);
+       return response.rows[0]; 
+    }
+    async  showSalesByDay(day: string): Promise<Sale> {
+      let  response= await pool.query("SELECT sum(products.price) as suma FROM public.sales inner join products on products.id=sales.product_id where extract(day from sales.sale_at)=$1",[day]);
+      return response.rows[0]; 
+    }
     
     async  getAll():Promise<Sale[]> {
        let  response= await pool.query('SELECT * FROM sales');
